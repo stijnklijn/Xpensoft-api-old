@@ -3,6 +3,7 @@ package nl.xpensoft.xpensoft.config;
 import nl.xpensoft.xpensoft.filter.JWTTokenGeneratorFilter;
 import nl.xpensoft.xpensoft.filter.JWTTokenValidatorFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +24,9 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Value("${xpensoft.client.url}")
+    private String client;
+
     private final JWTTokenGeneratorFilter jwtTokenGeneratorFilter;
     private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
 
@@ -37,7 +41,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().cors().configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Collections.singletonList("https://xpensoft.azurewebsites.net"));
+                    config.setAllowedOrigins(Collections.singletonList(client));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
