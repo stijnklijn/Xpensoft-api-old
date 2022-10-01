@@ -20,18 +20,22 @@ import java.util.Date;
 @Component
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
 
+    private static final long DURATION = 3600 * 1000;
+
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
+            Long expires = System.currentTimeMillis() + DURATION;
             SecretKey key = Keys.hmacShaKeyFor(SecurityConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
             String jwt = Jwts.builder().setIssuer("Xpensoft").setSubject("JWT")
                     .claim("email", authentication.getName())
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date((new Date()).getTime() + 3600 * 1000))
+                    .setExpiration(new Date((new Date()).getTime() + DURATION))
                     .signWith(key).compact();
-            response.setHeader(SecurityConstants.JWT_HEADER, jwt);
+            response.setHeader("Authorization", jwt);
+            response.setHeader("Expires", expires.toString());
         }
         chain.doFilter(request, response);
     }

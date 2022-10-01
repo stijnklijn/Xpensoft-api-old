@@ -35,7 +35,7 @@ public class JWTTokenValidatorFilter extends OncePerRequestFilter {
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String jwt = request.getHeader(SecurityConstants.JWT_HEADER);
+        String jwt = request.getHeader("Authorization");
         if (jwt != null && jwt.split(" ").length == 2
                 && jwt.split(" ")[0].equals("Bearer") && jwt.split(" ")[1] != null) {
             try {
