@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/api/transactions")
 public class TransactionController {
 
-    private final String PATH = "/transactions";
+    private final String PATH = "/api/transactions";
     private final TransactionService transactionService;
     private final Utils utils;
 

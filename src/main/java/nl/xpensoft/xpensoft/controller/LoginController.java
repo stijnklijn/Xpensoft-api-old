@@ -18,7 +18,7 @@ public class LoginController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/api/login")
     public User login(Principal principal) {
         return userRepository.getByEmail(principal.getName());
     }

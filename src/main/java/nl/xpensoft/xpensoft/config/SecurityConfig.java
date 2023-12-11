@@ -17,6 +17,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,8 +25,8 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${xpensoft.client.url}")
-    private String client;
+    @Value("${xpensoft.client.urls}")
+    private String[] CLIENT_URLS;
 
     private final JWTTokenGeneratorFilter jwtTokenGeneratorFilter;
     private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
@@ -41,7 +42,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().cors().configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(Collections.singletonList(client));
+                    config.setAllowedOrigins(Arrays.asList(CLIENT_URLS));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
@@ -53,10 +54,10 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
                 .addFilterAfter(jwtTokenGeneratorFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .mvcMatchers("/register").permitAll()
-                        .mvcMatchers("/login").authenticated()
-                        .mvcMatchers("/headers/**").authenticated()
-                        .mvcMatchers("/transactions/**").authenticated()
+                        .mvcMatchers("/api/register").permitAll()
+                        .mvcMatchers("/api/login").authenticated()
+                        .mvcMatchers("/api/headers/**").authenticated()
+                        .mvcMatchers("/api/transactions/**").authenticated()
                 ).httpBasic(Customizer.withDefaults());
         return http.build();
     }

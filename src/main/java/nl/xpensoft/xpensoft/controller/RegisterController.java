@@ -14,10 +14,10 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/register")
+@RequestMapping("/api/register")
 public class RegisterController {
 
-    private final String PATH = "/register";
+    private final String PATH = "/api/register";
     private final UserService userService;
     private final Utils utils;
 

@@ -16,10 +16,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/headers")
+@RequestMapping("/api/headers")
 public class HeaderController {
 
-    private final String PATH = "/headers";
+    private final String PATH = "/api/headers";
     private final HeaderService headerService;
     private final Utils utils;
 
